@@ -1,0 +1,34 @@
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+*.swp
+
+pids
+logs
+results
+tmp
+
+# Optional npm cache directory
+.npm
+
+# Dependency directory
+node_modules/
+
+# トランスパイルとかしたもの
+dist/
+
+# Buildしたcss
+public/css/main.css
+
+# API keys and secrets
+.env
+
+# from node_modules
+src/public/css/lib/*
+src/public/js/lib/*
+src/public/webfonts/*

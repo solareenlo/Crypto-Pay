@@ -1,0 +1,35 @@
+.navbar.navbar-light.fixed-top.navbar-expand-lg
+  .container
+    a.navbar-brand(href='/')
+      i.fab.fa-bitcoin
+      | Crypto Pay
+    button.navbar-toggler(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+      span.sr-only Toggle navigation
+      span.navbar-toggler-icon
+    .collapse.navbar-collapse
+      ul.nav.navbar-nav
+        li.nav-item(class=(title === 'ホーム') ? 'active' : undefined)
+          a.nav-link(href='/') ホーム
+        li.nav-item(class=(title === 'お問合せ') ? 'active' : undefined)
+          a.nav-link(href='/contact') お問合せ
+      ul.nav.navbar-nav.ml-auto
+        if !user
+          li.nav-item(class=(title === 'ログイン') ? 'active' : undefined)
+            a.nav-link(href='/login') ログイン
+          li.nav-item(class=(title === '新規登録') ? 'active' : undefined)
+            a.nav-link(href='/signup') 新規登録
+        else
+          li.dropdown(class=(title === 'アカウント編集') ? 'active' : undefined).nav-item
+            a.dropdown-toggle.nav-link(href='#', data-toggle='dropdown')
+              if user.profile.picture
+                img(src=user.profile.picture)
+              else
+                img(src=user.gravatar(60))
+              span= user.profile.name || user.email || user.id
+              i.caret
+            ul.dropdown-menu
+              li.dropdown-item
+                a(href='/account') アカウント情報
+              li.divider.dropdown-item
+              li.dropdown-item
+                a(href='/logout') ログアウト

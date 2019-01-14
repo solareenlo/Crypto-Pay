@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1 Crypto Pay (テストネット用)
+  p.lead 暗号通貨での支払いを試してみよう.
+  hr
+  .row
+    .col-md-6
+      h2 Bitcoin
+      p ビットコインでのお支払いはこちら.
+      p BIP21(QRコード), BIP32(HDウォレット), BIP39(パスフレーズ), BIP49(P2WPKHをP2SHでネスト)を使用.
+      p
+        a.btn.btn-raised(href='/bitcoin', role='button') 詳細へ »
+
+    .col-md-6
+      h2 Others
+      p その他暗号通貨での支払いはこちら.
+      p
+        a.btn.btn-raised(href='/others', role='button') 詳細へ »

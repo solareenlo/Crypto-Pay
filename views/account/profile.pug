@@ -1,0 +1,91 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h3 プロフィール情報
+
+  form(action='/account/profile', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='email') メールアドレス
+      .col-md-7
+        input.form-control(type='email', name='email', id='email', value=user.email, autocomplete='email')
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='name') 名前
+      .col-md-7
+        input.form-control(type='text', name='name', id='name', value=user.profile.name, autocomplete='name')
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right 性別
+      .col-sm-6
+        label.radio.col-sm-3
+          input(type='radio', checked=user.profile.gender=='male', name='gender', value='male', data-toggle='radio')
+          span 男性
+        label.radio.col-sm-3
+          input(type='radio', checked=user.profile.gender=='female', name='gender', value='female', data-toggle='radio')
+          span 女性
+        label.radio.col-sm-3
+          input(type='radio', checked=user.profile.gender=='other', name='gender', value='other', data-toggle='radio')
+          span その他
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='location') 所在地
+      .col-md-7
+        input.form-control(type='text', name='location', id='location', value=user.profile.location, autocomplete)
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='website') ウェブサイト
+      .col-md-7
+        input.form-control(type='text', name='website', id='website', value=user.profile.website, autocomplete='url')
+    .form-group
+      .offset-sm-3.col-md-7.pl-2
+        button.btn.btn.btn-primary(type='submit')
+          i.fas.fa-pencil-alt.fa-sm
+          | プロフィール更新
+
+  .pb-2.mt-2.mb-4.border-bottom
+    h3 パスワード変更
+
+  form(action='/account/password', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='password') 新しいパスワード
+      .col-md-7
+        input.form-control(type='password', name='password', id='password', autocomplete='new-password')
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='confirmPassword') パスワード確認
+      .col-md-7
+        input.form-control(type='password', name='confirmPassword', id='confirmPassword', autocomplete='new-password')
+    .form-group
+      .offset-sm-3.col-md-7.pl-2
+        button.btn.btn-primary(type='submit')
+          i.fas.fa-lock.fa-sm
+          | パスワード変更
+
+  .pb-2.mt-2.mb-4.border-bottom
+    h3 アカウント削除
+
+  form(action='/account/delete', method='POST', onsubmit="return confirm('本当にアカウント削除してもよろしいですか？');")
+    .form-group
+      p.offset-sm-3.col-md-7.pl-2 アカウントを削除すると, 元に戻すことはできません.
+      input(type='hidden', name='_csrf', value=_csrf)
+      .offset-sm-3.col-md-7.pl-2
+        button.btn.btn-danger(type='submit')
+          i.fas.fa-trash-alt.fa-sm
+          | アカウント削除
+
+  .pb-2.mt-2.mb-4.border-bottom
+    h3 アカウント連携
+  .form-group
+    .offset-sm-3.col-md-7.pl-2
+      if user.facebook
+        p.mb-1: a.text-danger(href='/account/unlink/facebook') Facebookアカウントとの連携解除
+      else
+        p.mb-1: a(href='/auth/facebook') Facebookアカウントと連携
+    .offset-sm-3.col-md-7.pl-2
+      if user.twitter
+        p.mb-1: a.text-danger(href='/account/unlink/twitter') Twitterアカウントとの連携解除
+      else
+        p.mb-1: a(href='/auth/twitter') Twitterアカウントと連携
+    .offset-sm-3.col-md-7.pl-2
+      if user.instagram
+        p.mb-1: a.text-danger(href='/account/unlink/github') GitHubアカウントとの連携解除
+      else
+        p.mb-1: a(href='/auth/github') GitHubアカウントと連携
