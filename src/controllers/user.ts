@@ -38,7 +38,7 @@ export let postLogin = (req: Request, res: Response, next: NextFunction) => {
     return res.redirect('/login');
   }
 
-  passport.authenticate('local', (err: Error, user: UserModel, info: IVerifyOptions) => {
+  passport.authenticate('local', (err, user, info) => {
     if (err) { return next(err); }
     if (!user) {
       req.flash('errors', info);
