@@ -23,3 +23,4 @@ $ yarn start または npm run start
 - https://github.com/Microsoft/TypeScript-Node-Starter
 - https://www.udemy.com/web-application-with-nodejs-express/
 - https://cccabinet.jpn.org/bootstrap4/
+- http://osamtimizer.hatenablog.com/entry/2018/07/07/204706

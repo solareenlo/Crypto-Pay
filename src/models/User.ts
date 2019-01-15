@@ -1,6 +1,28 @@
 import bcrypt from 'bcrypt-nodejs';
 import crypto from 'crypto';
 import mongoose from 'mongoose';
+import { Request, Response, NextFunction } from 'express';
+
+interface IUserDocument extends mongoose.Document {
+  email: String;
+  password: String;
+  passwordResetToken: String;
+  passwordResetExpires: Date;
+
+  facebook: String;
+  twitter: String;
+  tokens: Array<{}>;
+
+  profile: {
+    name: String,
+    gender: String,
+    location: String,
+    website: String,
+    picture: String
+  };
+
+  comparePassword(arg0: String, arg1: Boolean): void;
+}
 
 export type UserModel = mongoose.Document & {
   email: string;
@@ -9,6 +31,7 @@ export type UserModel = mongoose.Document & {
   passwordResetExpires: Date;
 
   facebook: string;
+  twitter: string,
   tokens: AuthToken[];
 
   profile: {
@@ -39,7 +62,6 @@ const userSchema = new mongoose.Schema({
 
   facebook: String,
   twitter: String,
-  github: String,
   tokens: Array,
 
   profile: {
@@ -54,7 +76,7 @@ const userSchema = new mongoose.Schema({
 /**
  * Password hash middleware.
  */
-userSchema.pre('save', function save(next) {
+userSchema.pre('save', function save(next: NextFunction) {
   const user = this;
   if (!user.isModified('password')) { return next(); }
   bcrypt.genSalt(10, (err, salt) => {
@@ -70,7 +92,7 @@ userSchema.pre('save', function save(next) {
 /**
  * Helper method for validating user's password.
  */
-userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
+userSchema.methods.comparePassword = function comparePassword(candidatePassword: string, cb: (err: any, isMatch: any) => {}) {
   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
     cb(err, isMatch);
   });
@@ -79,7 +101,7 @@ userSchema.methods.comparePassword = function comparePassword(candidatePassword,
 /**
  * Helper method for getting user's gravatar.
  */
-userSchema.methods.gravatar = function gravatar(size) {
+userSchema.methods.gravatar = function gravatar(size: number) {
   if (!size) {
     size = 200;
   }
@@ -91,6 +113,6 @@ userSchema.methods.gravatar = function gravatar(size) {
   return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model<IUserDocument>('User', userSchema);
 
 export default User;

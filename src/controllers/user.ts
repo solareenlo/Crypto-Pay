@@ -1,10 +1,11 @@
 import crypto from 'crypto';
 import { NextFunction, Request, Response } from 'express';
+import { WriteError } from 'mongodb';
 import nodemailer from 'nodemailer';
 import passport from 'passport';
 import { IVerifyOptions } from 'passport-local';
 import { promisify } from 'util';
-import { default as User, UserModel } from '../models/User';
+import { default as User, UserModel, AuthToken } from '../models/User';
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 
@@ -34,15 +35,13 @@ export let postLogin = (req: Request, res: Response, next: NextFunction) => {
 
   if (errors) {
     req.flash('errors', errors);
-
     return res.redirect('/login');
   }
 
-  passport.authenticate('local', (err, user, info) => {
+  passport.authenticate('local', (err: Error, user: UserModel, info: IVerifyOptions) => {
     if (err) { return next(err); }
     if (!user) {
       req.flash('errors', info);
-
       return res.redirect('/login');
     }
     req.logIn(user, (err) => {
@@ -57,7 +56,7 @@ export let postLogin = (req: Request, res: Response, next: NextFunction) => {
  * GET /logout
  * Log out.
  */
-export let logout = (req, res) => {
+export let logout = (req: Request, res: Response) => {
   req.logout();
   req.session.destroy((err) => {
     if (err) {
@@ -72,7 +71,7 @@ export let logout = (req, res) => {
  * GET /signup
  * Signup page.
  */
-export let getSignup = (req, res) => {
+export let getSignup = (req: Request, res: Response) => {
   if (req.user) {
     return res.redirect('/');
   }
@@ -85,9 +84,9 @@ export let getSignup = (req, res) => {
  * POST /signup
  * Create a new local account.
  */
-export let postSignup = (req, res, next) => {
+export let postSignup = (req: Request, res: Response, next: NextFunction) => {
   req.assert('email', '無効なメールアドレスです.').isEmail();
-  req.assert('password', 'パスワードは4文字以上にしてください.').len(4);
+  req.assert('password', 'パスワードは4文字以上にしてください.').len({ min: 4 });
   req.assert('confirmPassword', 'パスワードが一致しません.').equals(req.body.password);
   req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
 
@@ -95,7 +94,6 @@ export let postSignup = (req, res, next) => {
 
   if (errors) {
     req.flash('errors', errors);
-
     return res.redirect('/signup');
   }
 
@@ -108,7 +106,6 @@ export let postSignup = (req, res, next) => {
     if (err) { return next(err); }
     if (existingUser) {
       req.flash('errors', { msg: 'このメールアドレスのアカウントはすでに存在しています.' });
-
       return res.redirect('/signup');
     }
     user.save((err) => {
@@ -127,7 +124,7 @@ export let postSignup = (req, res, next) => {
  * GET /forgot
  * Forgot Password page.
  */
-export let getForgot = (req, res) => {
+export let getForgot = (req: Request, res: Response) => {
   if (req.isAuthenticated()) {
     return res.redirect('/');
   }
@@ -140,7 +137,7 @@ export let getForgot = (req, res) => {
  * POST /forgot
  * Create a random token, then the send user an email with a reset link.
  */
-export let postForgot = (req, res, next) => {
+export let postForgot = (req: Request, res: Response, next: NextFunction) => {
   req.assert('email', '有効なメールアドレスを入力してください.').isEmail();
   req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
 
@@ -148,17 +145,16 @@ export let postForgot = (req, res, next) => {
 
   if (errors) {
     req.flash('errors', errors);
-
     return res.redirect('/forgot');
   }
 
   const createRandomToken = randomBytesAsync(16)
     .then(buf => buf.toString('hex'));
 
-  const setRandomToken = token =>
+  const setRandomToken = (token: string) =>
     User
       .findOne({ email: req.body.email })
-      .then((user) => {
+      .then((user: any) => {
         if (!user) {
           req.flash('errors', { msg: 'このメールアドレスのアカウントは存在しません.' });
         } else {
@@ -166,11 +162,10 @@ export let postForgot = (req, res, next) => {
           user.passwordResetExpires = Date.now() + 3600000; // 1 hour
           user = user.save();
         }
-
         return user;
       });
 
-  const sendForgotPasswordEmail = (user) => {
+  const sendForgotPasswordEmail = (user: UserModel) => {
     if (!user) { return; }
     const token = user.passwordResetToken;
     let transporter = nodemailer.createTransport({
@@ -189,7 +184,6 @@ export let postForgot = (req, res, next) => {
         http://${req.headers.host}/reset/${token}\n\n
         If you did not request this, please ignore this email and your password will remain unchanged.\n`
     };
-
     return transporter.sendMail(mailOptions)
       .then(() => {
         req.flash('info', { msg: `An e-mail has been sent to ${user.email} with further instructions.` });
@@ -208,7 +202,6 @@ export let postForgot = (req, res, next) => {
               rejectUnauthorized: false
             }
           });
-
           return transporter.sendMail(mailOptions)
             .then(() => {
               req.flash('info', { msg: `An e-mail has been sent to ${user.email} with further instructions.` });
@@ -216,7 +209,6 @@ export let postForgot = (req, res, next) => {
         }
         console.log('ERROR: Could not send forgot password email after security downgrade.\n', err);
         req.flash('errors', { msg: 'Error sending the password reset message. Please try again shortly.' });
-
         return err;
       });
   };
@@ -232,7 +224,7 @@ export let postForgot = (req, res, next) => {
  * GET /reset/:token
  * Reset Password page.
  */
-export let getReset = (req, res, next) => {
+export let getReset = (req: Request, res: Response, next: NextFunction) => {
   if (req.isAuthenticated()) {
     return res.redirect('/');
   }
@@ -255,8 +247,8 @@ export let getReset = (req, res, next) => {
  * POST /reset/:token
  * Process the reset password request.
  */
-export let postReset = (req, res, next) => {
-  req.assert('password', 'パスワードは4文字以上にしてください.').len(4);
+export let postReset = (req: Request, res: Response, next: NextFunction) => {
+  req.assert('password', 'パスワードは4文字以上にしてください.').len({ min: 4 });
   req.assert('confirm', 'パスワードが一致しません.').equals(req.body.password);
 
   const errors = req.validationErrors();
@@ -286,7 +278,7 @@ export let postReset = (req, res, next) => {
         }));
       });
 
-  const sendResetPasswordEmail = (user) => {
+  const sendResetPasswordEmail = (user: UserModel) => {
     if (!user) { return; }
     let transporter = nodemailer.createTransport({
       service: 'SendGrid',
@@ -339,7 +331,7 @@ export let postReset = (req, res, next) => {
  * GET /account
  * Profile page.
  */
-export let getAccount = (req, res) => {
+export let getAccount = (req: Request, res: Response) => {
   res.render('account/profile', {
     title: 'Account Management'
   });
@@ -349,7 +341,7 @@ export let getAccount = (req, res) => {
  * POST /account/profile
  * Update profile information.
  */
-export let postUpdateProfile = (req, res, next) => {
+export let postUpdateProfile = (req: Request, res: Response, next: NextFunction) => {
   req.assert('email', '有効なメールアドレスを入力してください.').isEmail();
   req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
 
@@ -385,8 +377,8 @@ export let postUpdateProfile = (req, res, next) => {
  * POST /account/password
  * Update current password.
  */
-export let postUpdatePassword = (req, res, next) => {
-  req.assert('password', 'パスワードは4文字以上にしてください.').len(4);
+export let postUpdatePassword = (req: Request, res: Response, next: NextFunction) => {
+  req.assert('password', 'パスワードは4文字以上にしてください.').len({ min: 4 });
   req.assert('confirmPassword', 'パスワードが一致しません.').equals(req.body.password);
 
   const errors = req.validationErrors();
@@ -411,7 +403,7 @@ export let postUpdatePassword = (req, res, next) => {
  * POST /account/delete
  * Delete user account.
  */
-export let postDeleteAccount = (req, res, next) => {
+export let postDeleteAccount = (req: Request, res: Response, next: NextFunction) => {
   User.deleteOne({ _id: req.user.id }, (err) => {
     if (err) { return next(err); }
     req.logout();
@@ -424,13 +416,13 @@ export let postDeleteAccount = (req, res, next) => {
  * GET /account/unlink/:provider
  * Unlink OAuth provider.
  */
-export let getOauthUnlink = (req, res, next) => {
+export let getOauthUnlink = (req: Request, res: Response, next: NextFunction) => {
   const { provider } = req.params;
-  User.findById(req.user.id, (err, user) => {
+  User.findById(req.user.id, (err, user: any) => {
     if (err) { return next(err); }
     user[provider] = undefined;
-    user.tokens = user.tokens.filter(token => token.kind !== provider);
-    user.save((err) => {
+    user.tokens = user.tokens.filter((token: AuthToken) => token.kind !== provider);
+    user.save((err: WriteError) => {
       if (err) { return next(err); }
       req.flash('info', { msg: `${provider}アカウントとの連携を解除しました.` });
       res.redirect('/account');

@@ -1,10 +1,9 @@
 import passport from 'passport';
 import request from 'request';
-import passportInstagram from 'passport-instagram';
 import passportLocal from 'passport-local';
 import passportFacebook from 'passport-facebook';
 import passportTwitter from 'passport-twitter';
-import passportGitHub from 'passport-github';
+import _ from 'lodash';
 
 import { default as User } from '../models/User';
 import { Request, Response, NextFunction } from 'express';
@@ -12,10 +11,8 @@ import { Request, Response, NextFunction } from 'express';
 const LocalStrategy = passportLocal.Strategy;
 const FacebookStrategy = passportFacebook.Strategy;
 const TwitterStrategy = passportTwitter.Strategy;
-const GitHubStrategy = passportGitHub.Strategy;
-const InstagramStrategy = passportInstagram.Strategy;
 
-passport.serializeUser((user, done) => {
+passport.serializeUser<any, any>((user, done) => {
   done(undefined, user.id);
 });
 
@@ -29,17 +26,17 @@ passport.deserializeUser((id, done) => {
  * Sign in using Email and Password.
  */
 passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
-  User.findOne({ email: email.toLowerCase() }, (err, user) => {
+  User.findOne({ email: email.toLowerCase() }, (err, user: any) => {
     if (err) { return done(err); }
     if (!user) {
-      return done(undefined, false, { msg: `Email ${email} not found.` });
+      return done(undefined, false, { message: `Email ${email} not found.` });
     }
-    user.comparePassword(password, (err, isMatch) => {
+    user.comparePassword(password, (err: Error, isMatch: boolean) => {
       if (err) { return done(err); }
       if (isMatch) {
         return done(undefined, user);
       }
-      return done(undefined, false, { msg: 'Invalid email or password.' });
+      return done(undefined, false, { message: 'Invalid email or password.' });
     });
   });
 }));
@@ -68,7 +65,7 @@ passport.use(new FacebookStrategy({
   callbackURL: '/auth/facebook/callback',
   profileFields: ['name', 'email', 'link', 'locale', 'timezone', 'gender'],
   passReqToCallback: true
-}, (req, accessToken, refreshToken, profile, done) => {
+}, (req: any, accessToken, refreshToken, profile, done) => {
   if (req.user) {
     User.findOne({ facebook: profile.id }, (err, existingUser) => {
       if (err) { return done(err); }
@@ -120,65 +117,6 @@ passport.use(new FacebookStrategy({
 }));
 
 /**
- * Sign in with GitHub.
- */
-passport.use(new GitHubStrategy({
-  clientID: process.env.GITHUB_ID,
-  clientSecret: process.env.GITHUB_SECRET,
-  callbackURL: '/auth/github/callback',
-  passReqToCallback: true
-}, (req, accessToken, refreshToken, profile, done) => {
-  if (req.user) {
-    User.findOne({ github: profile.id }, (err, existingUser) => {
-      if (existingUser) {
-        req.flash('errors', { msg: 'There is already a GitHub account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
-        done(err);
-      } else {
-        User.findById(req.user.id, (err, user) => {
-          if (err) { return done(err); }
-          user.github = profile.id;
-          user.tokens.push({ kind: 'github', accessToken });
-          user.profile.name = user.profile.name || profile.displayName;
-          user.profile.picture = user.profile.picture || profile._json.avatar_url;
-          user.profile.location = user.profile.location || profile._json.location;
-          user.profile.website = user.profile.website || profile._json.blog;
-          user.save((err) => {
-            req.flash('info', { msg: 'GitHub account has been linked.' });
-            done(err, user);
-          });
-        });
-      }
-    });
-  } else {
-    User.findOne({ github: profile.id }, (err, existingUser) => {
-      if (err) { return done(err); }
-      if (existingUser) {
-        return done(undefined, existingUser);
-      }
-      User.findOne({ email: profile._json.email }, (err, existingEmailUser) => {
-        if (err) { return done(err); }
-        if (existingEmailUser) {
-          req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with GitHub manually from Account Settings.' });
-          done(err);
-        } else {
-          const user = new User();
-          user.email = profile._json.email;
-          user.github = profile.id;
-          user.tokens.push({ kind: 'github', accessToken });
-          user.profile.name = profile.displayName;
-          user.profile.picture = profile._json.avatar_url;
-          user.profile.location = profile._json.location;
-          user.profile.website = profile._json.blog;
-          user.save((err) => {
-            done(err, user);
-          });
-        }
-      });
-    });
-  }
-}));
-
-/**
  * Sign in with Twitter.
  */
 passport.use(new TwitterStrategy({
@@ -186,7 +124,7 @@ passport.use(new TwitterStrategy({
   consumerSecret: process.env.TWITTER_SECRET,
   callbackURL: '/auth/twitter/callback',
   passReqToCallback: true
-}, (req, accessToken, tokenSecret, profile, done) => {
+}, (req: any, accessToken, tokenSecret, profile, done) => {
   if (req.user) {
     User.findOne({ twitter: profile.id }, (err, existingUser) => {
       if (err) { return done(err); }
@@ -235,7 +173,7 @@ passport.use(new TwitterStrategy({
 /**
  * Login Required middleware.
  */
-export let isAuthenticated = (req, res, next) => {
+export let isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
   if (req.isAuthenticated()) {
     return next();
   }
@@ -245,65 +183,11 @@ export let isAuthenticated = (req, res, next) => {
 /**
  * Authorization Required middleware.
  */
-export let isAuthorized = (req, res, next) => {
+export let isAuthorized = (req: Request, res: Response, next: NextFunction) => {
   const provider = req.path.split('/').slice(-1)[0];
-  const token = req.user.tokens.find(token => token.kind === provider);
-  if (token) {
+  if (_.find(req.user.tokens, { kind: provider })) {
     next();
   } else {
     res.redirect(`/auth/${provider}`);
   }
 };
-
-/**
- * Sign in with Instagram.
- */
-passport.use(new InstagramStrategy({
-  clientID: process.env.INSTAGRAM_ID,
-  clientSecret: process.env.INSTAGRAM_SECRET,
-  callbackURL: '/auth/instagram/callback',
-  passReqToCallback: true
-}, (req, accessToken, refreshToken, profile, done) => {
-  if (req.user) {
-    User.findOne({ instagram: profile.id }, (err, existingUser) => {
-      if (err) { return done(err); }
-      if (existingUser) {
-        req.flash('errors', { msg: 'There is already an Instagram account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
-        done(err);
-      } else {
-        User.findById(req.user.id, (err, user) => {
-          if (err) { return done(err); }
-          user.instagram = profile.id;
-          user.tokens.push({ kind: 'instagram', accessToken });
-          user.profile.name = user.profile.name || profile.displayName;
-          user.profile.picture = user.profile.picture || profile._json.data.profile_picture;
-          user.profile.website = user.profile.website || profile._json.data.website;
-          user.save((err) => {
-            req.flash('info', { msg: 'Instagram account has been linked.' });
-            done(err, user);
-          });
-        });
-      }
-    });
-  } else {
-    User.findOne({ instagram: profile.id }, (err, existingUser) => {
-      if (err) { return done(err); }
-      if (existingUser) {
-        return done(undefined, existingUser);
-      }
-      const user = new User();
-      user.instagram = profile.id;
-      user.tokens.push({ kind: 'instagram', accessToken });
-      user.profile.name = profile.displayName;
-      // Similar to Twitter API, assigns a temporary e-mail address
-      // to get on with the registration process. It can be changed later
-      // to a valid e-mail address in Profile Management.
-      user.email = `${profile.username}@instagram.com`;
-      user.profile.website = profile._json.data.website;
-      user.profile.picture = profile._json.data.profile_picture;
-      user.save((err) => {
-        done(err, user);
-      });
-    });
-  }
-}));

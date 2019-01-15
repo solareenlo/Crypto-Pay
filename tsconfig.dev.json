@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
+    "lib": ["es6","dom"],
     "module": "commonjs",
+    "jsx": "react",
     "esModuleInterop": true,
     "target": "es6",
     "noImplicitAny": true,
@@ -8,7 +10,7 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
-    "types": ["node", "jquery"],
+    "types": ["node", "jquery", "webpack"],
     "paths": {
         "*": [
           "node_modules/*",
