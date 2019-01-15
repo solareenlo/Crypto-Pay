@@ -1,18 +1,34 @@
-# Crypto-Pay
+#Crypto-Pay
+
 暗号通貨支払いのできる簡単なECサイトの雰囲気を掴み取るためのデモサイト.  
 テストネットだけで使用できます.  
 **WIP!!!**  
 
 ## Usage
 ローカル環境で動かすには,
-```
-$ git clone https://github.com/solareenlo/Crypto-Pay.git
-$ cd Crypto-Pay
-$ yarn または npm install
-$ yarn copy または npm run copy
-$ yarn build または npm run build
-$ mongod
-$ yarn start または npm run start
+```bash
+# GitHubからソースコードをダウンロード
+git clone https://github.com/solareenlo/Crypto-Pay.git
+
+# ソースコードがあるディレクトリに移動
+cd Crypto-Pay
+
+# ソースコードに必要なファイルをyarnかnpmを使って外部からインストール
+yarn または npm install
+
+# 外部からインストールしてきたファイルのうち必要なファイルをsrcディレクトリにコピー
+yarn copy または npm run copy
+
+# srcディレクトリにあるソースコードをdistディレクトリにトランスパイル
+yarn build または npm run build
+
+# ユーザー情報を保存しておくデータベースのMongodbを起動
+mongod
+
+# トランスパイルしたコードを実行
+yarn start または npm run start
+
+# 任意のブラウザでhttp://localhost:3000を開く
 ```
 
 ## References
