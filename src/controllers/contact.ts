@@ -22,15 +22,14 @@ export let postContact = (req: Request, res: Response) => {
   let fromEmail;
   if (!req.user) {
     req.check('name').notEmpty().withMessage('Name cannot be blank');
-    req.assert('email', 'Email is not valid').isEmail();
+    req.check('email').isEmail().withMessage('Email is not valid');
   }
-  req.assert('message', 'Message cannot be blank').notEmpty();
+  req.check('message').notEmpty().withMessage('Message cannot be blank');
 
   const errors = req.validationErrors();
 
   if (errors) {
     req.flash('errors', errors);
-
     return res.redirect('/contact');
   }
 
@@ -55,7 +54,6 @@ export let postContact = (req: Request, res: Response) => {
     subject: 'Contact Form | Hackathon Starter',
     text: req.body.message
   };
-
   return transporter.sendMail(mailOptions)
     .then(() => {
       req.flash('success', { msg: 'Email has been sent successfully!' });
@@ -75,25 +73,21 @@ export let postContact = (req: Request, res: Response) => {
             rejectUnauthorized: false
           }
         });
-
         return transporter.sendMail(mailOptions);
       }
       console.log('ERROR: Could not send contact email after security downgrade.\n', err);
       req.flash('errors', { msg: 'Error sending the message. Please try again shortly.' });
-
       return false;
     })
     .then((result) => {
       if (result) {
         req.flash('success', { msg: 'Email has been sent successfully!' });
-
         return res.redirect('/contact');
       }
     })
     .catch((err) => {
       console.log('ERROR: Could not send contact email.\n', err);
       req.flash('errors', { msg: 'Error sending the message. Please try again shortly.' });
-
       return res.redirect('/contact');
     });
 };

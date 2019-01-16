@@ -109,7 +109,6 @@ userSchema.methods.gravatar = function gravatar(size: number) {
     return `https://gravatar.com/avatar/?s=${size}&d=retro`;
   }
   const md5 = crypto.createHash('md5').update(this.email).digest('hex');
-
   return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
 

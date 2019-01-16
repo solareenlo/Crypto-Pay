@@ -24,7 +24,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: [ 'tsx', '.ts', '.js', '.json' ]
+    extensions: [ '.ts', '.js', '.json' ]
   },
   output: {
     filename: 'server.js',
