@@ -1,6 +1,5 @@
 # Crypto-Pay
-
-暗号通貨支払いのできる簡単なECサイトの雰囲気を掴み取るためのデモサイト.  
+暗号通貨支払いのできる簡単なECサイトの雰囲気を感じ取れるデモサイト.  
 テストネットだけで使用できます.  
 **WIP!!!**  
 
@@ -30,6 +29,13 @@ yarn start または npm run start
 
 # 任意のブラウザでhttp://localhost:3000を開く
 ```
+
+## 使用した技術
+フロントエンド ... Pug, Bootstrap4  
+バックエンド ... Node.js, Express  
+DB ... MongoDB  
+JSのモジュールバンドラ ... Webpack4  
+利用したBIP ... BIP10(マルチシグ), BIP11(M of N トランザクション), BIP21(QRコード), BIP32(HDウォレット), BIP39(ニーモニック), BIP44(HDウォレットの階層), BIP49(P2WPKHをP2SHでネスト)
 
 ## References
 - https://github.com/blockchain-edu/be-intensive-week4
