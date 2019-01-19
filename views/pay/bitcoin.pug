@@ -1,6 +1,9 @@
 extends ../layout
 
 block content
+  - var large_tbtc = 0.005
+  - var medium_tbtc = 0.003
+  - var small_tbtc = 0.001
   script.
     let btnArray =[1, 1, 1];
     window.onload = function() {
@@ -26,7 +29,7 @@ block content
       h2 ピザ (大)
       figure
         img(src='/images/pizza01.jpg' class='figure-img' alt='pizza' width='200' height='154')
-      p.lead  1枚の値段: 0.005 tBTC
+      p.lead  1枚の値段: #{large_tbtc} tBTC
       .btn-toolbar(role='toolbar', aria-label='増減ボタン')
         .btn-group.mr-2(role='group', aria-label='1個増やす')
           p.lead 個数
@@ -41,7 +44,7 @@ block content
     .col-md-4
       h2 ピザ (中)
       img(src='/images/pizza02.jpg' alt='' width='115' height='99')
-      p.lead  1枚の値段: 0.003 tBTC
+      p.lead  1枚の値段: #{medium_tbtc} tBTC
       .btn-toolbar(role='toolbar', aria-label='増減ボタン')
         .btn-group.mr-2(role='group', aria-label='1個増やす')
           p.lead 個数
@@ -55,7 +58,7 @@ block content
     .col-md-4
       h2 ピザ (小)
       img(src='/images/pizza03.jpg' alt='' width='87' height='75')
-      p.lead  1枚の値段: 0.001 tBTC
+      p.lead  1枚の値段: #{small_tbtc} tBTC
       .btn-toolbar(role='toolbar', aria-label='増減ボタン')
         .btn-group.mr-2(role='group', aria-label='1個増やす')
           p.lead 個数
