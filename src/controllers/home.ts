@@ -5,8 +5,10 @@ import { Request, Response } from 'express';
  * Home page.
  */
 export let home = (req: Request, res: Response) => {
+  const address: number = 1234567890;
   res.render('home', {
-    title: 'ホーム'
+    title: 'ホーム',
+    address
   });
 };
 
@@ -14,6 +16,10 @@ export let getPayBitcoin = (req: Request, res: Response) => {
   res.render('pay/bitcoin', {
     title: 'Bitcoin Pay'
   });
+};
+
+export let postPayBitcoin = (req: Request, res: Response) => {
+  res.render('pay/bitcoin', {title: 'Bitcoin Pay'});
 };
 
 export let getPayOthers = (req: Request, res: Response) => {

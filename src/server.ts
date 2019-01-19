@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import dotenv from 'dotenv';
 import errorHandler from 'errorhandler';
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import path from 'path';
 
 dotenv.config({ path: '.env.example' });

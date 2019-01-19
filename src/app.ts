@@ -9,6 +9,7 @@ import express from 'express';
 import flash from 'express-flash';
 import session from 'express-session';
 import expressValidator from 'express-validator';
+import { check, body, query, param, validationResult } from 'express-validator/check';
 import lusca from 'lusca';
 import mongo from 'connect-mongo';
 import mongoose from 'mongoose';
@@ -46,7 +47,10 @@ mongoose.set('useNewUrlParser', true);
 mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('error', (err) => {
   console.error(err);
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
+  console.log(
+    '%s MongoDB connection error. Please make sure MongoDB is running.',
+    chalk.red('✗')
+  );
   process.exit();
 });
 

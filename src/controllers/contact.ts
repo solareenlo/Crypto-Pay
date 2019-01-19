@@ -8,7 +8,7 @@ import nodemailer from 'nodemailer';
 export let getContact = (req: Request, res: Response) => {
   const unknownUser = !(req.user);
   res.render('contact', {
-    title: 'Contact',
+    title: 'お問合せ',
     unknownUser
   });
 };
@@ -21,7 +21,7 @@ export let postContact = (req: Request, res: Response) => {
   let fromName;
   let fromEmail;
   if (!req.user) {
-    req.check('name').notEmpty().withMessage('Name cannot be blank');
+    req.check('name').not().isEmpty().withMessage('Name cannot be blank');
     req.check('email').isEmail().withMessage('Email is not valid');
   }
   req.check('message').notEmpty().withMessage('Message cannot be blank');
@@ -51,7 +51,7 @@ export let postContact = (req: Request, res: Response) => {
   const mailOptions = {
     to: 'your@email.com',
     from: `${fromName} <${fromEmail}>`,
-    subject: 'Contact Form | Hackathon Starter',
+    subject: 'Contact Form | Crypto Pay',
     text: req.body.message
   };
   return transporter.sendMail(mailOptions)
