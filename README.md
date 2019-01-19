@@ -21,7 +21,7 @@ yarn copy または npm run copy
 # srcディレクトリにあるソースコードをトランスパイルしてdistディレクトリに保存
 yarn build または npm run build
 
-# ユーザー情報を保存しておくデータベースのMongodbを起動
+# ユーザー情報を保存しておくMongodbを別のターミナルで起動
 mongod
 
 # トランスパイルしたコードを実行
