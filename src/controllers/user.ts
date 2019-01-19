@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { WriteError } from 'mongodb';
 import nodemailer from 'nodemailer';
 import passport from 'passport';
@@ -18,7 +18,7 @@ export let getLogin = (req: Request, res: Response) => {
     return res.redirect('/');
   }
   res.render('account/login', {
-    title: 'Login'
+    title: 'ログイン'
   });
 };
 
@@ -76,7 +76,7 @@ export let getSignup = (req: Request, res: Response) => {
     return res.redirect('/');
   }
   res.render('account/signup', {
-    title: 'Create Account'
+    title: 'アカウント作成'
   });
 };
 
@@ -129,7 +129,7 @@ export let getForgot = (req: Request, res: Response) => {
     return res.redirect('/');
   }
   res.render('account/forgot', {
-    title: 'Forgot Password'
+    title: 'パスワードをお忘れの方へ'
   });
 };
 
@@ -177,7 +177,7 @@ export let postForgot = (req: Request, res: Response, next: NextFunction) => {
     });
     const mailOptions = {
       to: user.email,
-      from: 'hackathon@starter.com',
+      from: 'crypto@pay.com',
       subject: 'Crypto Payのパスワードリセット',
       text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n
         Please click on the following link, or paste this into your browser to complete the process:\n\n
@@ -238,7 +238,7 @@ export let getReset = (req: Request, res: Response, next: NextFunction) => {
         return res.redirect('/forgot');
       }
       res.render('account/reset', {
-        title: 'Password Reset'
+        title: 'パスワードリセット'
       });
     });
 };
