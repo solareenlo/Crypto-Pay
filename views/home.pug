@@ -1,19 +1,38 @@
 extends layout
 
 block content
-  h1 Crypto Pay (テストネット用)
+  h1.display-3 Crypto Pay (テストネット用)
   p.lead 暗号通貨での支払いを試してみよう.
+  p #{address}
   hr
   .row
     .col-md-6
-      h2 Bitcoin
+      h2.display-4 Bitcoin
       p ビットコインでのお支払いはこちら.
-      p BIP21(QRコード), BIP32(HDウォレット), BIP39(パスフレーズ), BIP49(P2WPKHをP2SHでネスト)を使用.
       p
-        a.btn.btn-raised(href='/bitcoin', role='button') 詳細へ »
+        .card
+          .card-header
+            |  利用したBIP
+          .card-body
+            a(href='https://github.com/bitcoin/bips/blob/master/bip-0010.mediawiki' target='blank') BIP10
+            |  (マルチシグ),&nbsp;
+            a(href='https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki' target='blank') BIP11
+            |  (M of N トランザクション),&nbsp;
+            a(href='https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki' target='blank') BIP21
+            |  (QRコード),&nbsp;
+            a(href='https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki' target='blank') BIP32
+            |  (HDウォレット),&nbsp;
+            a(href='https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki' target='blank') BIP39
+            |  (ニーモニック),&nbsp;
+            a(href='https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki' target='blank') BIP44
+            |  (HDウォレットの階層),&nbsp;
+            a(href='https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki' target='blank') BIP49
+            |  (P2WPKHをP2SHでネスト)を使用.
+      p
+        a.btn.btn-primary(href='/bitcoin', role='button') 詳細へ »
 
     .col-md-6
-      h2 Others
+      h2.display-4 Others
       p その他暗号通貨での支払いはこちら.
       p
-        a.btn.btn-raised(href='/others', role='button') 詳細へ »
+        a.btn.btn-primary(href='/others', role='button') 詳細へ »
