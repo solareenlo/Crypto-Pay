@@ -105,24 +105,26 @@ app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 3155760000
  * Primary app routes.
  */
 app.get('/', homeController.home);
-app.get('/bitcoin', homeController.getPayBitcoin);
-app.get('/others', homeController.getPayOthers);
-app.get('/contact', contactController.getContact);
-app.post('/contact', contactController.postContact);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
 app.get('/forgot', userController.getForgot);
 app.post('/forgot', userController.postForgot);
-app.get('/signup', userController.getSignup);
-app.post('/signup', userController.postSignup);
 app.get('/reset/:token', userController.getReset);
 app.post('/reset/:token', userController.postReset);
+app.get('/signup', userController.getSignup);
+app.post('/signup', userController.postSignup);
+app.get('/contact', contactController.getContact);
+app.post('/contact', contactController.postContact);
 app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
 app.post('/account/profile', passportConfig.isAuthenticated, userController.postUpdateProfile);
 app.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
+app.get('/bitcoin', homeController.getPayBitcoin);
+app.post('/bitcoin', homeController.postPayBitcoin);
+app.put('/bitcoin', homeController.putLargeCount);
+app.get('/others', homeController.getPayOthers);
 
 /**
  * OAuth authentication routes. (Sign in)
