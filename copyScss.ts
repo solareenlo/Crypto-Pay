@@ -9,4 +9,5 @@ shell.cp('-R', 'node_modules/font-awesome/scss', 'src/public/css/lib/font-awesom
 shell.cp('-R', 'node_modules/bootstrap/dist/js/bootstrap.min.js', 'src/public/js/lib');
 shell.cp('-R', 'node_modules/jquery/dist/jquery.min.js', 'src/public/js/lib');
 shell.cp('-R', 'node_modules/popper.js/dist/umd/popper.min.js', 'src/public/js/lib');
+shell.cp('-R', 'node_modules/axios/dist/axios.min.js', 'src/public/js/lib');
 shell.cp('-R', 'node_modules/@fortawesome/fontawesome-free/webfonts/*', 'src/public/webfonts');
