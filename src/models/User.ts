@@ -3,11 +3,15 @@ import crypto from 'crypto';
 import mongoose from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
 
-interface IUserDocument extends mongoose.Document {
+export interface IUserDocument extends mongoose.Document {
   email: String;
   password: String;
   passwordResetToken: String;
   passwordResetExpires: Date;
+  largeCount: Number;
+  middleCount: Number;
+  smallCount: Number;
+  [index: string]: any;
 
   facebook: String;
   twitter: String;
@@ -29,6 +33,10 @@ export type UserModel = mongoose.Document & {
   password: string;
   passwordResetToken: string;
   passwordResetExpires: Date;
+  largeCount: number;
+  middleCount: number;
+  smallCount: number;
+  [index: string]: any;
 
   facebook: string;
   twitter: string,
@@ -59,6 +67,9 @@ const userSchema = new mongoose.Schema({
   password: String,
   passwordResetToken: String,
   passwordResetExpires: Date,
+  largeCount: Number,
+  middleCount: Number,
+  smallCount: Number,
 
   facebook: String,
   twitter: String,

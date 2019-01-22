@@ -99,7 +99,10 @@ export let postSignup = (req: Request, res: Response, next: NextFunction) => {
 
   const user = new User({
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+    largeCount: 0,
+    middleCount: 0,
+    smallCount: 0
   });
 
   User.findOne({ email: req.body.email }, (err, existingUser) => {
