@@ -29,6 +29,8 @@ block content
             |  (P2WPKHをP2SHでネスト)を使用.
       p
         a.btn.btn-primary(href='/bitcoin', role='button') 詳細へ »
+        if !user
+          | （詳細を表示するにはログインしてください.）
 
     .col-md-6
       h2.display-4 Others

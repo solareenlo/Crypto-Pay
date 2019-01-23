@@ -2,9 +2,10 @@ import { Request, Response } from 'express';
 import { default as User, UserModel, IUserDocument } from '../models/User';
 
 interface Inum {
-  large: number;
-  medium: number;
-  small: number;
+  price: number[];
+  count: number[];
+  amount: number[];
+  address: string[];
 }
 
 /**
@@ -18,35 +19,44 @@ export let home = (req: Request, res: Response) => {
 };
 
 export let getPayBitcoin = (req: Request, res: Response) => {
+  if (!req.user) {
+    return res.redirect('/');
+  }
   const tbtc: Inum = {
-    large: 0.005,
-    medium: 0.003,
-    small: 0.001
+    price: [0.005, 0.003, 0.001],
+    count: [0, 0, 0],
+    amount: [0, 0, 0],
+    address: ['large', 'middle', 'small']
   };
-  res.render('pay/bitcoin', {
-    title: 'Bitcoin Pay',
-    tbtc
+  const { id } = req.user;
+  console.log(req.user);
+  User.find({ _id: id }, (findErr, user: IUserDocument) => {
+    if (findErr) res.status(500);
+    else {
+      res.status(200);
+      tbtc.count[0] = user[0].largeCount;
+      tbtc.count[1] = user[0].middleCount;
+      tbtc.count[2] = user[0].smallCount;
+      for (let i = 0; i < 3; i++)
+        tbtc.amount[i] = tbtc.price[i] * tbtc.count[i];
+      res.render('pay/bitcoin', {
+        title: 'Bitcoin Pay',
+        tbtc
+      });
+    }
   });
 };
 
-export let postPayBitcoin = (req: Request, res: Response) => {
-  const firstName = req.body.firstName;
-  const lastName = req.body.lastName;
-  let num = req.body.num;
-  num = req.user._id;
-  res.send(`${firstName} ${lastName} ${num}`);
-};
-
 export let putLargeCount = (req: Request, res: Response) => {
-  const { id } = req.user;
-  const num = req.body.count;
+  const { id } = req.user; // mongodbで一意に与えられるユーザーのidを取得
+  const num = req.body.count; // 何個ずつ増やしたり減らしたりするかの個数
   User.findByIdAndUpdate(id, { $inc: {'largeCount': num} }, err => {
     if (err) res.status(500).send();
     else {
       User.find({ _id: id }, (findErr, user: IUserDocument) => {
         if (findErr) res.status(500).send();
         else {
-          res.status(200).send(`${user[0].largeCount}`);
+          res.status(200).send(`${user[0].largeCount}`); // userは配列の中にobjectが入ってる
         }
       });
     }
