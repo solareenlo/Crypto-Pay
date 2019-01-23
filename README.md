@@ -30,12 +30,15 @@ yarn start または npm run start
 # 任意のブラウザでhttp://localhost:3000を開く
 ```
 
+## MongoDBのコンソールからの使い方
+- https://github.com/solareenlo/Web-App-with-Nodejs-Express/tree/master/08_mongodb_console
+
 ## 使用した技術
 フロントエンド ... Pug, Bootstrap4, axios  
 バックエンド ... Node.js, Express, mongoose  
 DB ... MongoDB  
 JSのモジュールバンドラ ... Webpack4  
-利用したBIP ... BIP10(マルチシグ), BIP11(M of N トランザクション), BIP21(QRコード), BIP32(HDウォレット), BIP39(ニーモニック), BIP44(HDウォレットの階層), BIP49(P2WPKHをP2SHでネスト)
+利用したBIP ... [BIP10](https://github.com/bitcoin/bips/blob/master/bip-0010.mediawiki)(マルチシグ), [BIP11](https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki)(M of N トランザクション), [BIP21](https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki)(QRコード), [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki)(HDウォレット), [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)(ニーモニック), [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki)(HDウォレットのマルチアカウント階層), [BIP49](https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki)(P2WPKHをP2SHでネスト)
 
 ## References
 - https://github.com/blockchain-edu/be-intensive-week4
