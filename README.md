@@ -31,8 +31,8 @@ yarn start または npm run start
 ```
 
 ## 使用した技術
-フロントエンド ... Pug, Bootstrap4  
-バックエンド ... Node.js, Express  
+フロントエンド ... Pug, Bootstrap4, axios  
+バックエンド ... Node.js, Express, mongoose  
 DB ... MongoDB  
 JSのモジュールバンドラ ... Webpack4  
 利用したBIP ... BIP10(マルチシグ), BIP11(M of N トランザクション), BIP21(QRコード), BIP32(HDウォレット), BIP39(ニーモニック), BIP44(HDウォレットの階層), BIP49(P2WPKHをP2SHでネスト)
@@ -46,3 +46,4 @@ JSのモジュールバンドラ ... Webpack4
 - https://www.udemy.com/web-application-with-nodejs-express/
 - https://cccabinet.jpn.org/bootstrap4/
 - http://osamtimizer.hatenablog.com/entry/2018/07/07/204706
+- https://qiita.com/muiscript/items/573247b12ff0bc4e5d3c#read-get
