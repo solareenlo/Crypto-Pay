@@ -44,7 +44,7 @@ const app = express();
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useNewUrlParser', true);
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/crypto-pay');
 mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log(
