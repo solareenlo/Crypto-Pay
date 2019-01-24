@@ -19,7 +19,7 @@
     "watch-sass": "node-sass -w src/public/css/main.scss dist/public/css/main.css",
     "watch-webpack": "webpack --config webpack.config.dev.js --watch",
     "watch-node": "nodemon dist/server.js",
-    "tslint": "tslint -c tslint.json -p tsconfig.dev.json"
+    "tslint": "tslint -c tslint.json -p tsconfig.json"
   },
   "dependencies": {
     "async": "^2.6.1",
