@@ -9,7 +9,7 @@
   "author": "solareenlo",
   "license": "MIT",
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "yarn copy && yarn build && node dist/server.js",
     "build": "yarn build-sass && yarn build-webpack && yarn copy-static-assets",
     "build-sass": "node-sass src/public/css/main.scss dist/public/css/main.css",
     "build-webpack": "webpack --config webpack.config.dev.js",
