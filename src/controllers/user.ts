@@ -6,6 +6,7 @@ import passport from 'passport';
 import { IVerifyOptions } from 'passport-local';
 import { promisify } from 'util';
 import { default as User, UserModel, AuthToken } from '../models/User';
+import { default as Count } from '../models/Count';
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 
@@ -97,12 +98,28 @@ export let postSignup = (req: Request, res: Response, next: NextFunction) => {
     return res.redirect('/signup');
   }
 
+  // 顧客のカウンターを保存してる
+  Count.findOne({name: 'sola'}, (err, count) => {
+    if (err) { return next(err); }
+    if (!count) {
+      const count = new Count({
+        name: 'sola',
+        customerCount: 0
+      });
+      count.save((err) => {
+        if (err) { return next(err); }
+      });
+    } else console.log('Counter exist.');
+  });
+
+  // 顧客のjsonを新規作成
   const user = new User({
     email: req.body.email,
     password: req.body.password,
     largeCount: 0,
     middleCount: 0,
-    smallCount: 0
+    smallCount: 0,
+    customerNumber: 0
   });
 
   User.findOne({ email: req.body.email }, (err, existingUser) => {
@@ -111,13 +128,19 @@ export let postSignup = (req: Request, res: Response, next: NextFunction) => {
       req.flash('errors', { msg: 'このメールアドレスのアカウントはすでに存在しています.' });
       return res.redirect('/signup');
     }
-    user.save((err) => {
+    // 顧客のカウントを1つ増やして保存してる
+    Count.findOneAndUpdate({name: 'sola'}, {$inc: {'customerCount': 1}}, {new: true}, (err, count) => {
       if (err) { return next(err); }
-      req.logIn(user, (err) => {
-        if (err) {
-          return next(err);
-        }
-        res.redirect('/');
+      console.log(count.customerCount);
+      user.customerNumber = Number(count.customerCount);
+      user.save((err) => {
+        if (err) { return next(err); }
+        req.logIn(user, (err) => {
+          if (err) {
+            return next(err);
+          }
+          res.redirect('/');
+        });
       });
     });
   });
