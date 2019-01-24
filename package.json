@@ -10,8 +10,9 @@
   "license": "MIT",
   "scripts": {
     "start": "node dist/server.js",
-    "start-local": "yarn copy && yarn build-prod && node dist/server.js",
+    "start-prod": "yarn copy && yarn build-prod && node dist/server.js",
     "build-prod": "yarn build-sass && yarn build-webpack-prod && yarn copy-static-assets",
+    "start-dev": "yarn copy && yarn build-dev && node dist/server.js",
     "build-dev": "yarn build-sass && yarn build-webpack-dev && yarn copy-static-assets",
     "build-sass": "node-sass src/public/css/main.scss dist/public/css/main.css",
     "build-webpack-prod": "webpack --config webpack.config.prod.js",
