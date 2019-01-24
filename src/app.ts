@@ -122,7 +122,7 @@ app.post('/account/password', passportConfig.isAuthenticated, userController.pos
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 app.get('/bitcoin', homeController.getPayBitcoin);
-app.put('/bitcoin', homeController.putLargeCount);
+app.put('/bitcoin', homeController.putPizzaCount);
 app.get('/others', homeController.getPayOthers);
 
 /**

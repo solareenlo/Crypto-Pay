@@ -47,20 +47,54 @@ export let getPayBitcoin = (req: Request, res: Response) => {
   });
 };
 
-export let putLargeCount = (req: Request, res: Response) => {
+export let putPizzaCount = (req: Request, res: Response) => {
   const { id } = req.user; // mongodbで一意に与えられるユーザーのidを取得
-  const num = req.body.count; // 何個ずつ増やしたり減らしたりするかの個数
-  User.findByIdAndUpdate(id, { $inc: {'largeCount': num} }, err => {
-    if (err) res.status(500).send();
-    else {
-      User.find({ _id: id }, (findErr, user: IUserDocument) => {
-        if (findErr) res.status(500).send();
-        else {
-          res.status(200).send(`${user[0].largeCount}`); // userは配列の中にobjectが入ってる
-        }
-      });
-    }
-  });
+  const count: number = req.body.data.count; // 何個ずつ増やしたり減らしたりするかの個数
+  const size: number = req.body.data.size;
+  let pizzaCount: string;
+  if (size == 0) {
+    pizzaCount = 'largeCount';
+    console.log(pizzaCount);
+    User.findByIdAndUpdate(id, { $inc: {largeCount: count} }, err => {
+      if (err) res.status(500).send();
+      else {
+        User.find({ _id: id }, (findErr, user: IUserDocument) => {
+          if (findErr) res.status(500).send();
+          else {
+            res.status(200).send(`${user[0].largeCount}`); // userは配列の中にobjectが入ってる
+          }
+        });
+      }
+    });
+  } else if (size == 1) {
+    pizzaCount = 'middleCount';
+    console.log(pizzaCount);
+    User.findByIdAndUpdate(id, { $inc: {middleCount: count} }, err => {
+      if (err) res.status(500).send();
+      else {
+        User.find({ _id: id }, (findErr, user: IUserDocument) => {
+          if (findErr) res.status(500).send();
+          else {
+            res.status(200).send(`${user[0].middleCount}`); // userは配列の中にobjectが入ってる
+          }
+        });
+      }
+    });
+  } else if (size == 2) {
+    pizzaCount = 'smallCount';
+    console.log(pizzaCount);
+    User.findByIdAndUpdate(id, { $inc: {smallCount: count} }, err => {
+      if (err) res.status(500).send();
+      else {
+        User.find({ _id: id }, (findErr, user: IUserDocument) => {
+          if (findErr) res.status(500).send();
+          else {
+            res.status(200).send(`${user[0].smallCount}`); // userは配列の中にobjectが入ってる
+          }
+        });
+      }
+    });
+  }
 };
 
 export let getPayOthers = (req: Request, res: Response) => {

@@ -17,9 +17,9 @@ block content
           p.lead 枚数
           input.btn.btn-sm.btn-outline-info(value=tbtc.count[0])#cde0
         .btn-group.mr-2(role='group', aria-label='1個増やす')
-          button.btn.btn-secondary.btn-success.rounded-circle.p-1(style='width:2rem;height:2rem;' onclick='putLarge(1, 0);')#cde0 +
+          button.btn.btn-secondary.btn-success.rounded-circle.p-1(style='width:2rem;height:2rem;' onclick='putPizzaCount(1, 0);')#cde0 +
         .btn-group.mr-2(role='group', aria-label='1個減らす')
-          button.btn.btn-secondary.btn-danger.rounded-circle.p-1(style='width:2rem;height:2rem;' onclick='putLarge(-1, 0);')#cde0 -
+          button.btn.btn-secondary.btn-danger.rounded-circle.p-1(style='width:2rem;height:2rem;' onclick='putPizzaCount(-1, 0);')#cde0 -
       p.lead 支払い先QRコード
         img(src=`https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:${tbtc.address[0]}?amount=${tbtc.amount[0]}`)
 
@@ -32,9 +32,9 @@ block content
           p.lead 枚数
           input.btn.btn-sm.btn-outline-info(value=tbtc.count[1])#cde1
         .btn-group.mr-2(role='group', aria-label='1個増やす')
-          button.btn.btn-secondary.btn-success.rounded-circle.p-1(style='width:2rem;height:2rem;' onclick='setBtnValueUp(1);')#cde1 +
+          button.btn.btn-secondary.btn-success.rounded-circle.p-1(style='width:2rem;height:2rem;' onclick='putPizzaCount(1, 1);')#cde1 +
         .btn-group.mr-2(role='group', aria-label='1個減らす')
-          button.btn.btn-secondary.btn-danger.rounded-circle.p-1(style='width:2rem;height:2rem;' onclick='setBtnValueDown(1);')#cde1 -
+          button.btn.btn-secondary.btn-danger.rounded-circle.p-1(style='width:2rem;height:2rem;' onclick='putPizzaCount(-1, 1);')#cde1 -
       p.lead 支払い先QRコード
         img(src=`https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:${tbtc.address[1]}?amount=${tbtc.amount[1]}`)
 
@@ -47,8 +47,8 @@ block content
           p.lead 枚数
           input.btn.btn-sm.btn-outline-info(value=tbtc.count[2])#cde2
         .btn-group.mr-2(role='group', aria-label='1個増やす')
-          button.btn.btn-secondary.btn-success.rounded-circle.p-1(style='width:2rem;height:2rem;' onclick='setBtnValueUp(2);')#cde2 +
+          button.btn.btn-secondary.btn-success.rounded-circle.p-1(style='width:2rem;height:2rem;' onclick='putPizzaCount(1, 2);')#cde2 +
         .btn-group.mr-2(role='group', aria-label='1個減らす')
-          button.btn.btn-secondary.btn-danger.rounded-circle.p-1(style='width:2rem;height:2rem;' onclick='setBtnValueDown(2);')#cde2 -
+          button.btn.btn-secondary.btn-danger.rounded-circle.p-1(style='width:2rem;height:2rem;' onclick='putPizzaCount(-1, 2);')#cde2 -
       p.lead 支払い先QRコード
         img(src=`https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:${tbtc.address[2]}?amount=${tbtc.amount[2]}`)
