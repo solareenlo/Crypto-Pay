@@ -20,7 +20,7 @@ tmp
 node_modules/
 
 # トランスパイルとかしたもの
-dist/
+# dist/
 
 # Buildしたcss
 public/css/main.css
