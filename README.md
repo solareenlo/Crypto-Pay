@@ -1,5 +1,6 @@
 # Crypto-Pay
 **Live Demo**: https://boiling-brook-52440.herokuapp.com  
+
 暗号通貨支払いのできる簡単なECサイトの雰囲気を感じ取れるデモサイト.  
 テストネットだけで使用できます.  
 **WIP!!!**  
@@ -41,6 +42,9 @@ DB ... MongoDB, mLab
 PaaS ... Heroku  
 JSのモジュールバンドラ ... Webpack4  
 利用したBIP ... [BIP10](https://github.com/bitcoin/bips/blob/master/bip-0010.mediawiki)(マルチシグ), [BIP11](https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki)(M of N トランザクション), [BIP21](https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki)(QRコード), [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki)(HDウォレット), [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)(ニーモニック), [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki)(HDウォレットのマルチアカウント階層), [BIP49](https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki)(P2WPKHをP2SHでネスト)
+
+## 全体的な解説は以下にあります.
+- https://scrapbox.io/crypto-pay/
 
 ## References
 - https://github.com/blockchain-edu/be-intensive-week4
