@@ -71,7 +71,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   cookie: { maxAge: 1209600000 }, // two weeks in milliseconds
   store: new MongoStore({
-    url: process.env.MONGODB_URI,
+    url: process.env.MONGODB_URI || 'mongodb://localhost:27017/crypto-pay',
     autoReconnect: true,
   })
 }));

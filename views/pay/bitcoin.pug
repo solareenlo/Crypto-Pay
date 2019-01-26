@@ -1,9 +1,6 @@
 extends ../layout
 
 block content
-  // script(src='https://unpkg.com/axios/dist/axios.min.js')
-  script(src='/js/bitcoin.js')
-
   .pb-2.mt-2.mb-4.border-bottom
     h2 商品
   .row
@@ -21,7 +18,7 @@ block content
         .btn-group.mr-2(role='group', aria-label='1個減らす')
           button.btn.btn-secondary.btn-danger.rounded-circle.p-1(style='width:2rem;height:2rem;' onclick='putPizzaCount(-1, 0);')#cde0 -
       p.lead 支払い先QRコード
-        img(src=`https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:${tbtc.address[0]}?amount=${tbtc.amount[0]}`)
+        img#target0(src=`https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:${tbtc.address[0]}?amount=${tbtc.amount[0]}`)
 
     .col-md-4.card.card-body.bg-light
       h2 ピザ (M)
@@ -36,7 +33,7 @@ block content
         .btn-group.mr-2(role='group', aria-label='1個減らす')
           button.btn.btn-secondary.btn-danger.rounded-circle.p-1(style='width:2rem;height:2rem;' onclick='putPizzaCount(-1, 1);')#cde1 -
       p.lead 支払い先QRコード
-        img(src=`https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:${tbtc.address[1]}?amount=${tbtc.amount[1]}`)
+        img#target1(src=`https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:${tbtc.address[1]}?amount=${tbtc.amount[1]}`)
 
     .col-md-4.card.card-body.bg-light
       h2 ピザ (S)
@@ -51,4 +48,7 @@ block content
         .btn-group.mr-2(role='group', aria-label='1個減らす')
           button.btn.btn-secondary.btn-danger.rounded-circle.p-1(style='width:2rem;height:2rem;' onclick='putPizzaCount(-1, 2);')#cde2 -
       p.lead 支払い先QRコード
-        img(src=`https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:${tbtc.address[2]}?amount=${tbtc.amount[2]}`)
+        img#target2(src=`https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:${tbtc.address[2]}?amount=${tbtc.amount[2]}`)
+
+  script.
+  script(src='/js/bitcoin.js')

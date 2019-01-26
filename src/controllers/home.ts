@@ -29,7 +29,6 @@ export let getPayBitcoin = (req: Request, res: Response) => {
     address: ['large', 'middle', 'small']
   };
   const { id } = req.user;
-  console.log(req.user);
   User.find({ _id: id }, (findErr, user: IUserDocument) => {
     if (findErr) res.status(500);
     else {
@@ -51,47 +50,76 @@ export let putPizzaCount = (req: Request, res: Response) => {
   const { id } = req.user; // mongodbで一意に与えられるユーザーのidを取得
   const count: number = req.body.data.count; // 何個ずつ増やしたり減らしたりするかの個数
   const size: number = req.body.data.size;
-  let pizzaCount: string;
   if (size == 0) {
-    pizzaCount = 'largeCount';
-    console.log(pizzaCount);
-    User.findByIdAndUpdate(id, { $inc: {largeCount: count} }, err => {
+    User.findById(id, (err, user: IUserDocument) => {
       if (err) res.status(500).send();
       else {
-        User.find({ _id: id }, (findErr, user: IUserDocument) => {
-          if (findErr) res.status(500).send();
-          else {
-            res.status(200).send(`${user[0].largeCount}`); // userは配列の中にobjectが入ってる
-          }
-        });
+        if ((user.largeCount >= 0 && count == 1) || (user.largeCount > 0 && count == -1)) { // userはobjectで返ってきてる
+          User.findByIdAndUpdate(id, { $inc: {largeCount: count} }, err => {
+            if (err) res.status(500).send();
+            else {
+              User.find({ _id: id }, (findErr, user: IUserDocument) => {
+                if (findErr) res.status(500).send();
+                else {
+                  const data = {
+                    address: `https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:?amount=${user[0].largeCount}`,
+                    count: user[0].largeCount, // userは配列の中のobjectで返ってきてる
+                    amount: 0.005
+                  };
+                  res.status(200).send(data);
+                }
+              });
+            }
+          });
+        }
       }
     });
   } else if (size == 1) {
-    pizzaCount = 'middleCount';
-    console.log(pizzaCount);
-    User.findByIdAndUpdate(id, { $inc: {middleCount: count} }, err => {
+    User.findById(id, (err, user: IUserDocument) => {
       if (err) res.status(500).send();
       else {
-        User.find({ _id: id }, (findErr, user: IUserDocument) => {
-          if (findErr) res.status(500).send();
-          else {
-            res.status(200).send(`${user[0].middleCount}`); // userは配列の中にobjectが入ってる
-          }
-        });
+        if ((user.middleCount >= 0 && count == 1) || (user.middleCount > 0 && count == -1)) { // userはobjectで返ってきてる
+          User.findByIdAndUpdate(id, { $inc: {middleCount: count} }, err => {
+            if (err) res.status(500).send();
+            else {
+              User.find({ _id: id }, (findErr, user: IUserDocument) => {
+                if (findErr) res.status(500).send();
+                else {
+                  const data = {
+                    address: `https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:?amount=${user[0].middleCount}`,
+                    count: user[0].middleCount,
+                    amount: 0.003
+                  };
+                  res.status(200).send(data); // userは配列の中にobjectが入ってる
+                }
+              });
+            }
+          });
+        }
       }
     });
   } else if (size == 2) {
-    pizzaCount = 'smallCount';
-    console.log(pizzaCount);
-    User.findByIdAndUpdate(id, { $inc: {smallCount: count} }, err => {
+    User.findById(id, (err, user: IUserDocument) => {
       if (err) res.status(500).send();
       else {
-        User.find({ _id: id }, (findErr, user: IUserDocument) => {
-          if (findErr) res.status(500).send();
-          else {
-            res.status(200).send(`${user[0].smallCount}`); // userは配列の中にobjectが入ってる
-          }
-        });
+        if ((user.smallCount >= 0 && count == 1) || (user.smallCount > 0 && count == -1)) { // userはobjectで返ってきてる
+          User.findByIdAndUpdate(id, { $inc: {smallCount: count} }, err => {
+            if (err) res.status(500).send();
+            else {
+              User.find({ _id: id }, (findErr, user: IUserDocument) => {
+                if (findErr) res.status(500).send();
+                else {
+                  const data = {
+                    address: `https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:?amount=${user[0].smallCount}`,
+                    count: user[0].smallCount,
+                    amount: 0.001
+                  };
+                  res.status(200).send(data); // userは配列の中にobjectが入ってる
+                }
+              });
+            }
+          });
+        }
       }
     });
   }
