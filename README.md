@@ -3,10 +3,16 @@
 
 暗号通貨支払いのできる簡単なECサイトの雰囲気を感じ取れるデモサイト.  
 テストネットだけで使用できます.  
-**WIP!!!**  
 
-## Usage
-ローカル環境で動かすには,
+### [WIP]実装予定の機能
+- [ ] QRコードをフロントエンドで表示
+- [ ] assert機能
+- [ ] お問合せに対する返信メール
+- [ ] SNSによるログイン
+- [ ] 入金を確認する
+- [ ] 売上金を回収する
+
+## ローカル環境での動かし方
 ```bash
 # GitHubからソースコードをダウンロード
 git clone https://github.com/solareenlo/Crypto-Pay.git
@@ -41,7 +47,7 @@ yarn start-dev または npm run start-dev
 DB ... MongoDB, mLab  
 PaaS ... Heroku  
 JSのモジュールバンドラ ... Webpack4  
-利用したBIP ... [BIP10](https://github.com/bitcoin/bips/blob/master/bip-0010.mediawiki)(マルチシグ), [BIP11](https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki)(M of N トランザクション), [BIP21](https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki)(QRコード), [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki)(HDウォレット), [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)(ニーモニック), [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki)(HDウォレットのマルチアカウント階層), [BIP49](https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki)(P2WPKHをP2SHでネスト)
+参照したBIP ... [BIP10](https://github.com/bitcoin/bips/blob/master/bip-0010.mediawiki)(マルチシグ), [BIP11](https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki)(M of N トランザクション), [BIP21](https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki)(QRコード), [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki)(HDウォレット), [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)(ニーモニック), [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki)(HDウォレットのマルチアカウント階層), [BIP49](https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki)(P2WPKHをP2SHでネスト)
 
 ## 全体的な解説は以下にあります.
 - https://scrapbox.io/crypto-pay/
