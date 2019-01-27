@@ -8,6 +8,7 @@ import { promisify } from 'util';
 import { default as User, UserModel, AuthToken } from '../models/User';
 import { default as Count } from '../models/Count';
 
+const lib = require('../bitcoin/lib');
 const randomBytesAsync = promisify(crypto.randomBytes);
 
 /**
@@ -119,7 +120,8 @@ export let postSignup = (req: Request, res: Response, next: NextFunction) => {
     largeCount: 0,
     middleCount: 0,
     smallCount: 0,
-    customerNumber: 0
+    customerNumber: 0,
+    extPubKey: ['a', 'b', 'c']
   });
 
   User.findOne({ email: req.body.email }, (err, existingUser) => {
@@ -133,6 +135,9 @@ export let postSignup = (req: Request, res: Response, next: NextFunction) => {
       if (err) { return next(err); }
       console.log(count.customerCount);
       user.customerNumber = Number(count.customerCount);
+      for (let i = 0; i < 3; i++) {
+        user.extPubKey[i] = lib.generateChildPubkeyBase58(lib.extPubkeys[i], Number(user.customerNumber));
+      }
       user.save((err) => {
         if (err) { return next(err); }
         req.logIn(user, (err) => {

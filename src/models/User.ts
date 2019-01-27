@@ -12,6 +12,7 @@ export interface IUserDocument extends mongoose.Document {
   middleCount: Number;
   smallCount: Number;
   customerNumber: Number;
+  extPubKey: Array<String>;
   [index: string]: any;
 
   facebook: String;
@@ -38,6 +39,7 @@ export type UserModel = mongoose.Document & {
   middleCount: number;
   smallCount: number;
   customerNumber: number;
+  extPubKey: string[];
   [index: string]: any;
 
   facebook: string;
@@ -73,6 +75,7 @@ const userSchema = new mongoose.Schema({
   middleCount: Number,
   smallCount: Number,
   customerNumber: Number,
+  extPubKey: Array,
 
   facebook: String,
   twitter: String,
