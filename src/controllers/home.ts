@@ -66,103 +66,85 @@ export let putPizzaCount = (req: Request, res: Response) => {
   if (size == 0) {
     User.findById(id, (err, user: IUserDocument) => {
       if (err) res.status(500).send();
-      else {
-        if ((user.largeCount >= 0 && count == 1) || (user.largeCount > 0 && count == -1)) { // userはobjectで返ってきてる
-          User.findByIdAndUpdate(id, { $inc: {largeCount: count} }, err => {
-            if (err) res.status(500).send();
-            else {
-              User.find({ _id: id }, (findErr, user: IUserDocument) => {
-                if (findErr) res.status(500).send();
-                else {
-                  const pubKeysBase58: string[] = [];
-                  // 環境変数にあるpubkeys -> customerNumberによる子拡張公開鍵 -> ピザのサイズによる子拡張公開鍵を生成
-                  for (let i = 0; i < 3; i++)
-                    pubKeysBase58.push(lib.generateChildPubkeyBase58(user[0].extPubKey[i], 0));
-                  const pubKeys: Buffer[] = [];
-                  // 環境変数にあるpubkeys -> customerNumberによる子拡張公開鍵 -> ピザのサイズによる子拡張公開鍵 -> ピザの個数による子拡張公開鍵を生成
-                  for (let i = 0; i < 3; i++)
-                    pubKeys.push(lib.generateChildPubkeyBuffer(pubKeysBase58[i], Number(user[0].largeCount)));
-                  const address: string = lib.generateMultisigAddress(3, pubKeys);
-                  console.log(address);
-                  const amount: number = 0.005 * user[0].largeCount;
-                  const data = {
-                    address: `https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:${address}?amount=${amount}`,
-                    count: user[0].largeCount, // userは配列の中のobjectで返ってきてる
-                  };
-                  res.status(200).send(data);
-                }
-              });
-            }
+      if ((user.largeCount >= 0 && count == 1) || (user.largeCount > 0 && count == -1)) { // userはobjectで返ってきてる
+        User.findByIdAndUpdate(id, { $inc: {largeCount: count} }, err => {
+          if (err) res.status(500).send();
+          User.find({ _id: id }, (findErr, user: IUserDocument) => {
+            if (findErr) res.status(500).send();
+            const pubKeysBase58: string[] = [];
+            // 環境変数にあるpubkeys -> customerNumberによる子拡張公開鍵 -> ピザのサイズによる子拡張公開鍵を生成
+            for (let i = 0; i < 3; i++)
+              pubKeysBase58.push(lib.generateChildPubkeyBase58(user[0].extPubKey[i], 0));
+            const pubKeys: Buffer[] = [];
+            // 環境変数にあるpubkeys -> customerNumberによる子拡張公開鍵 -> ピザのサイズによる子拡張公開鍵 -> ピザの個数による子拡張公開鍵を生成
+            for (let i = 0; i < 3; i++)
+              pubKeys.push(lib.generateChildPubkeyBuffer(pubKeysBase58[i], Number(user[0].largeCount)));
+            const address: string = lib.generateMultisigAddress(3, pubKeys);
+            console.log(address);
+            const amount: number = 0.005 * user[0].largeCount;
+            const data = {
+              address: `https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:${address}?amount=${amount}`,
+              count: user[0].largeCount, // userは配列の中のobjectで返ってきてる
+            };
+            res.status(200).send(data);
           });
-        }
+        });
       }
     });
   } else if (size == 1) {
     User.findById(id, (err, user: IUserDocument) => {
       if (err) res.status(500).send();
-      else {
-        if ((user.middleCount >= 0 && count == 1) || (user.middleCount > 0 && count == -1)) { // userはobjectで返ってきてる
-          User.findByIdAndUpdate(id, { $inc: {middleCount: count} }, err => {
-            if (err) res.status(500).send();
-            else {
-              User.find({ _id: id }, (findErr, user: IUserDocument) => {
-                if (findErr) res.status(500).send();
-                else {
-                  const pubKeysBase58: string[] = [];
-                  // 環境変数にあるpubkeys -> customerNumberによる子拡張公開鍵 -> ピザのサイズによる子拡張公開鍵を生成
-                  for (let i = 0; i < 3; i++)
-                    pubKeysBase58.push(lib.generateChildPubkeyBase58(user[0].extPubKey[i], 1));
-                  const pubKeys: Buffer[] = [];
-                  // 環境変数にあるpubkeys -> customerNumberによる子拡張公開鍵 -> ピザのサイズによる子拡張公開鍵 -> ピザの個数による子拡張公開鍵を生成
-                  for (let i = 0; i < 3; i++)
-                    pubKeys.push(lib.generateChildPubkeyBuffer(pubKeysBase58[i], Number(user[0].middleCount)));
-                  const address: string = lib.generateMultisigAddress(3, pubKeys);
-                  console.log(address);
-                  const amount: number = 0.003 * user[0].middleCount;
-                  const data = {
-                    address: `https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:${address}?amount=${amount}`,
-                    count: user[0].middleCount, // userは配列の中のobjectで返ってきてる
-                  };
-                  res.status(200).send(data); // userは配列の中にobjectが入ってる
-                }
-              });
-            }
+      if ((user.middleCount >= 0 && count == 1) || (user.middleCount > 0 && count == -1)) { // userはobjectで返ってきてる
+        User.findByIdAndUpdate(id, { $inc: {middleCount: count} }, err => {
+          if (err) res.status(500).send();
+          User.find({ _id: id }, (findErr, user: IUserDocument) => {
+            if (findErr) res.status(500).send();
+            const pubKeysBase58: string[] = [];
+            // 環境変数にあるpubkeys -> customerNumberによる子拡張公開鍵 -> ピザのサイズによる子拡張公開鍵を生成
+            for (let i = 0; i < 3; i++)
+              pubKeysBase58.push(lib.generateChildPubkeyBase58(user[0].extPubKey[i], 1));
+            const pubKeys: Buffer[] = [];
+            // 環境変数にあるpubkeys -> customerNumberによる子拡張公開鍵 -> ピザのサイズによる子拡張公開鍵 -> ピザの個数による子拡張公開鍵を生成
+            for (let i = 0; i < 3; i++)
+              pubKeys.push(lib.generateChildPubkeyBuffer(pubKeysBase58[i], Number(user[0].middleCount)));
+            const address: string = lib.generateMultisigAddress(3, pubKeys);
+            console.log(address);
+            const amount: number = 0.003 * user[0].middleCount;
+            const data = {
+              address: `https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:${address}?amount=${amount}`,
+              count: user[0].middleCount, // userは配列の中のobjectで返ってきてる
+            };
+            res.status(200).send(data); // userは配列の中にobjectが入ってる
           });
-        }
+        });
       }
     });
   } else if (size == 2) {
     User.findById(id, (err, user: IUserDocument) => {
       if (err) res.status(500).send();
-      else {
-        if ((user.smallCount >= 0 && count == 1) || (user.smallCount > 0 && count == -1)) { // userはobjectで返ってきてる
-          User.findByIdAndUpdate(id, { $inc: {smallCount: count} }, err => {
-            if (err) res.status(500).send();
-            else {
-              User.find({ _id: id }, (findErr, user: IUserDocument) => {
-                if (findErr) res.status(500).send();
-                else {
-                  const pubKeysBase58: string[] = [];
-                  // 環境変数にあるpubkeys -> customerNumberによる子拡張公開鍵 -> ピザのサイズによる子拡張公開鍵を生成
-                  for (let i = 0; i < 3; i++)
-                    pubKeysBase58.push(lib.generateChildPubkeyBase58(user[0].extPubKey[i], 1));
-                  const pubKeys: Buffer[] = [];
-                  // 環境変数にあるpubkeys -> customerNumberによる子拡張公開鍵 -> ピザのサイズによる子拡張公開鍵 -> ピザの個数による子拡張公開鍵を生成
-                  for (let i = 0; i < 3; i++)
-                    pubKeys.push(lib.generateChildPubkeyBuffer(pubKeysBase58[i], Number(user[0].smallCount)));
-                  const address: string = lib.generateMultisigAddress(3, pubKeys);
-                  console.log(address);
-                  const amount: number = 0.001 * user[0].smallCount;
-                  const data = {
-                    address: `https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:${address}?amount=${amount}`,
-                    count: user[0].smallCount, // userは配列の中のobjectで返ってきてる
-                  };
-                  res.status(200).send(data); // userは配列の中にobjectが入ってる
-                }
-              });
-            }
+      if ((user.smallCount >= 0 && count == 1) || (user.smallCount > 0 && count == -1)) { // userはobjectで返ってきてる
+        User.findByIdAndUpdate(id, { $inc: {smallCount: count} }, err => {
+          if (err) res.status(500).send();
+          User.find({ _id: id }, (findErr, user: IUserDocument) => {
+            if (findErr) res.status(500).send();
+            const pubKeysBase58: string[] = [];
+            // 環境変数にあるpubkeys -> customerNumberによる子拡張公開鍵 -> ピザのサイズによる子拡張公開鍵を生成
+            for (let i = 0; i < 3; i++)
+              pubKeysBase58.push(lib.generateChildPubkeyBase58(user[0].extPubKey[i], 1));
+            const pubKeys: Buffer[] = [];
+            // 環境変数にあるpubkeys -> customerNumberによる子拡張公開鍵 -> ピザのサイズによる子拡張公開鍵 -> ピザの個数による子拡張公開鍵を生成
+            for (let i = 0; i < 3; i++)
+              pubKeys.push(lib.generateChildPubkeyBuffer(pubKeysBase58[i], Number(user[0].smallCount)));
+            const address: string = lib.generateMultisigAddress(3, pubKeys);
+            console.log(address);
+            const amount: number = 0.001 * user[0].smallCount;
+            const data = {
+              address: `https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:${address}?amount=${amount}`,
+              count: user[0].smallCount, // userは配列の中のobjectで返ってきてる
+            };
+            res.status(200).send(data); // userは配列の中にobjectが入ってる
           });
-        }
+        });
       }
     });
   }
