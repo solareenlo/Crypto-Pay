@@ -133,7 +133,6 @@ export let postSignup = (req: Request, res: Response, next: NextFunction) => {
     // 顧客のカウントを1つ増やして保存してる
     Count.findOneAndUpdate({name: 'sola'}, {$inc: {'customerCount': 1}}, {new: true}, (err, count) => {
       if (err) { return next(err); }
-      console.log(count.customerCount);
       user.customerNumber = Number(count.customerCount);
       for (let i = 0; i < 3; i++) {
         user.extPubKey[i] = lib.generateChildPubkeyBase58(lib.extPubkeys[i], Number(user.customerNumber));

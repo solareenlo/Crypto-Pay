@@ -49,7 +49,6 @@ export let getPayBitcoin = (req: Request, res: Response) => {
         for (let j = 0; j < 3; j++)
           pubKeys.push(lib.generateChildPubkeyBuffer(pubKeysBase58[j], Number(tbtc.count[i])));
         tbtc.address[i] = lib.generateMultisigAddress(3, pubKeys);
-        console.log(tbtc.amount[i], tbtc.count[i], tbtc.address[i]);
       }
       res.render('pay/bitcoin', {
         title: 'Bitcoin Pay',
@@ -80,7 +79,6 @@ export let putPizzaCount = (req: Request, res: Response) => {
             for (let i = 0; i < 3; i++)
               pubKeys.push(lib.generateChildPubkeyBuffer(pubKeysBase58[i], Number(user[0].largeCount)));
             const address: string = lib.generateMultisigAddress(3, pubKeys);
-            console.log(address);
             const amount: number = 0.005 * user[0].largeCount;
             const data = {
               address: `https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:${address}?amount=${amount}`,
@@ -108,7 +106,6 @@ export let putPizzaCount = (req: Request, res: Response) => {
             for (let i = 0; i < 3; i++)
               pubKeys.push(lib.generateChildPubkeyBuffer(pubKeysBase58[i], Number(user[0].middleCount)));
             const address: string = lib.generateMultisigAddress(3, pubKeys);
-            console.log(address);
             const amount: number = 0.003 * user[0].middleCount;
             const data = {
               address: `https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:${address}?amount=${amount}`,
@@ -137,7 +134,6 @@ export let putPizzaCount = (req: Request, res: Response) => {
               pubKeys.push(lib.generateChildPubkeyBuffer(pubKeysBase58[i], Number(user[0].smallCount)));
             const address: string = lib.generateMultisigAddress(3, pubKeys);
             const amount: number = 0.001 * user[0].smallCount;
-            console.log(amount, user[0].smallCount, address);
             const data = {
               address: `https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=bitcoin:${address}?amount=${amount}`,
               count: user[0].smallCount, // userは配列の中のobjectで返ってきてる

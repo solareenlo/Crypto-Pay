@@ -25,7 +25,6 @@ export let postContact = (req: Request, res: Response) => {
     req.check('email').isEmail().withMessage('メールアドレスが無効です.');
   }
   req.check('message').notEmpty().withMessage('ご用件をお書きください');
-  console.log(req.body);
 
   const errors = req.validationErrors();
 
