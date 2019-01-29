@@ -21,10 +21,11 @@ export let postContact = (req: Request, res: Response) => {
   let fromName;
   let fromEmail;
   if (!req.user) {
-    req.check('name').not().isEmpty().withMessage('Name cannot be blank');
-    req.check('email').isEmail().withMessage('Email is not valid');
+    req.check('name').not().isEmpty().withMessage('お名前をお書きください.');
+    req.check('email').isEmail().withMessage('メールアドレスが無効です.');
   }
-  req.check('message').notEmpty().withMessage('Message cannot be blank');
+  req.check('message').notEmpty().withMessage('ご用件をお書きください');
+  console.log(req.body);
 
   const errors = req.validationErrors();
 
