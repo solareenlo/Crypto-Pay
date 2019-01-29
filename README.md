@@ -7,7 +7,6 @@ Bitcoin支払いのできる簡単なECサイトの雰囲気を感じ取れる�
 [ブロックチェーンエンジニア集中講座](https://www.blockchain-edu.jp/engineer)第4週の成果物です.
 
 ### [WIP]実装予定の機能[Coming Sooooooon]
-- [ ] assert機能
 - [ ] お問合せに対する返信メール
 - [ ] SNSによるログイン
 - [ ] 購入確認画面
